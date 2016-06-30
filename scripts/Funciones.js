@@ -241,10 +241,9 @@ function EliminarDetalle(){
 }
 
 function EnviarPedido(){
-  ObtenerDireccion();
-
   var usuario = document.getElementById("usuarioId").value;
   var direccion = document.getElementById("address").value;
+  alert("esta es la direccion: " + direccion);
   var req = $.ajax({
     url: 'http://ws-restaurante-udata.azurewebsites.net/WSPedido.svc/AgregarPedido?idUsuario='+ usuario + '&direccion=' +direccion,
     dataType: 'jsonp',
@@ -255,7 +254,6 @@ function EnviarPedido(){
 }
 
 function EnviarDetalles(datos){
-  alert();
   var len = sessionStorage.length;
 
   for (var i = 0; i < len; i++) {
@@ -309,7 +307,10 @@ function ObtenerDireccion(){
       geocoder.geocode({'latLng': latlng}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           if (results[0]) {
-            $('#address').val(results[0].address_components[0].long_name + ", " + results[0].address_components[1].long_name + ", " + results[0].address_components[2].long_name + ", " + results[0].address_components[3].long_name);
+            var lugar = results[0].address_components[0].long_name + ", " + results[0].address_components[1].long_name + ", " + results[0].address_components[2].long_name + ", " + results[0].address_components[3].long_name;
+            document.getElementById("address").value = lugar;
+            alert(document.getElementById("address").value);
+            EnviarPedido();
           } else {
             alert('No results found');
           }
